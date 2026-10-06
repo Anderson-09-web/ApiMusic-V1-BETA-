@@ -1,0 +1,7 @@
+fastapi==0.142.2
+uvicorn==0.54.0
+pydantic==2.13.5
+discord.py==2.7.1
+wavelink==3.5.2
+aiohttp==3.14.4
+python-dotenv==1.2.4
