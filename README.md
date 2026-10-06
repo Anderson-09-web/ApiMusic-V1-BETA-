@@ -6,47 +6,182 @@ API y sistema de música para Discord basado en Python, discord.py, Wavelink, Fa
 
 - 🤖 Discord Music Bot
 - 🎧 Lavalink 4.2.2
-- 🌐 FastAPI
-- 🔎 Búsqueda y reproducción
+- 🌐 FastAPI Music API
+- 🔎 Búsqueda de música
 - 📋 Sistema de cola
-- 🎛️ Panel interactivo de música
-- 🔁 Modos de repetición
+- 🎛️ Panel interactivo
+- 🔁 Repetición
 - 🔀 Shuffle
 - 🔊 Control de volumen
 - ⏸️ Pausa y reanudación
-- ⏹️ Detener reproducción
-- 🎵 Plugin de YouTube para Lavalink
+- ▶️ Reproducción automática
+- 🎵 YouTube Plugin para Lavalink
 
-## 🛠️ Tecnologías
+## 🧩 Arquitectura
 
-- Python 3.12
-- discord.py 2.7.1
-- Wavelink 3.5.2
-- FastAPI
-- Uvicorn
-- aiohttp
-- python-dotenv
-- Lavalink 4.2.2
+El proyecto utiliza tres servicios independientes:
+
+1. 🌐 Music API
+2. 🤖 Discord Bot
+3. 🎧 Lavalink
+
+## 📁 Estructura
+
+```text
+ApiMusic-V1-BETA-/
+├── api/
+├── bot/
+├── models/
+├── plugins/
+├── services/
+├── utils/
+├── data/
+├── main.py
+├── application.yml
+├── Dockerfile.lavalink
+├── requirements.txt
+├── .dockerignore
+├── .gitignore
+└── README.md
+```
 
 ## 🔐 Variables de entorno
 
+Configura estas variables en Render. No subas `.env` a GitHub.
+
+```text
 DISCORD_TOKEN=
 LAVALINK_URI=
 LAVALINK_PASSWORD=
 MUSIC_API_URL=
+```
 
-Nunca publiques tu archivo .env ni tokens privados.
+## ☁️ DESPLIEGUE EN RENDER
 
-## ☁️ Render
+### 1. 🌐 MUSIC API
 
-El proyecto está preparado para utilizar tres servicios independientes:
+Crear un servicio Web Service desde el repositorio de GitHub.
 
-1. Music API con FastAPI
-2. Discord Bot como Worker
-3. Lavalink mediante Docker
+**Runtime:** Python
 
-## 📌 Estado
+**Build Command:**
+```bash
+pip install -r requirements.txt
+```
+
+**Start Command:**
+```bash
+uvicorn main:app --host 0.0.0.0 --port $PORT
+```
+
+Variables necesarias:
+
+```text
+LAVALINK_URI=<URL_DE_LAVALINK>
+LAVALINK_PASSWORD=<CONTRASEÑA>
+```
+
+### 2. 🤖 DISCORD BOT
+
+Crear un servicio Background Worker desde el mismo repositorio.
+
+**Runtime:** Python
+
+**Build Command:**
+```bash
+pip install -r requirements.txt
+```
+
+**Start Command:**
+```bash
+python -m bot.main
+```
+
+Variables necesarias:
+
+```text
+DISCORD_TOKEN=<TOKEN_DEL_BOT>
+LAVALINK_URI=<URL_DE_LAVALINK>
+LAVALINK_PASSWORD=<CONTRASEÑA>
+MUSIC_API_URL=<URL_DE_MUSIC_API>
+```
+
+### 3. 🎧 LAVALINK
+
+Lavalink requiere Java 17 y se ejecuta mediante el Dockerfile incluido en el proyecto.
+
+Archivo:
+
+```text
+Dockerfile.lavalink
+```
+
+El Dockerfile prepara Java 17, descarga Lavalink 4.2.2 y copia la configuración y los plugins.
+
+**Puerto:** 8080
+
+Variable necesaria:
+
+```text
+LAVALINK_PASSWORD=<CONTRASEÑA>
+```
+
+## 🔗 CONEXIÓN ENTRE SERVICIOS
+
+Una vez desplegados los servicios, configurar:
+
+```text
+Discord Bot
+    │
+    ├── LAVALINK_URI ──► Lavalink
+    │
+    └── MUSIC_API_URL ─► Music API
+```
+
+## 🧪 DESARROLLO LOCAL
+
+Instalar dependencias:
+
+```bash
+pip install -r requirements.txt
+```
+
+Iniciar API:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+Iniciar Lavalink:
+
+```bash
+java -jar Lavalink.jar
+```
+
+Iniciar Bot:
+
+```bash
+python -m bot.main
+```
+
+## 🔒 SEGURIDAD
+
+Nunca publiques:
+
+- Tokens de Discord
+- Contraseñas de Lavalink
+- Archivos `.env`
+- Claves privadas
+
+## 📌 ESTADO
 
 **Versión:** V1 BETA
 
 🚧 Proyecto en desarrollo.
+
+## 👨‍💻 PROYECTO
+
+ApiMusic V1 BETA
+
+Repositorio GitHub:
+https://github.com/Anderson-09-web/ApiMusic-V1-BETA-
