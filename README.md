@@ -185,3 +185,9 @@ ApiMusic V1 BETA
 
 Repositorio GitHub:
 https://github.com/Anderson-09-web/ApiMusic-V1-BETA-
+
+## Mas apis como esta ?
+
+https://github.com/Anderson-09-web/AIservice-V1-Beta-
+
+https://github.com/Anderson-09-web/Lang-ES-EN-V1-BETA-
